@@ -59,7 +59,7 @@ def main():
                 exit()
 
     running = True
-    active = 0
+    active = 1
     pressed_right = False
     pressed_left = False
     pressed_up = False
