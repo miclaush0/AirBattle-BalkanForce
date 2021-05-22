@@ -24,7 +24,7 @@ class MainMenu:
         self.surface.fill([0, 0, 0])
         if self.active == 0:
             self.update_background(dt)
-            self.update_menu()
+        #    self.update_menu()
 
         return self.surface
 
@@ -62,5 +62,5 @@ class MainMenu:
         for tree in self.trees:
             self.surface.blit(self.tree, tree)
 
-    def update_menu(self):
-        if self.selected == 
+    #def update_menu(self):
+     #   if self.selected == 
