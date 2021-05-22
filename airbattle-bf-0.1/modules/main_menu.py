@@ -17,7 +17,10 @@ class MainMenu:
         self.credits = pygame.image.load('images\\menu\\credits.png')
         self.quit_s = pygame.image.load('images\\menu\\quit_s.png')
         self.quit = pygame.image.load('images\\menu\\quit.png')
+        self.best_score = pygame.image.load('images\\menu\\best_score.png')
+        self.score_font = pygame.font.Font('fonts\\kongtext.ttf', 30)
         self.trees = []
+        
         for y in range(-50, 600, 70):
             for x in range(-50, 800, 70):
                 self.trees.append([x + random.randint(50, 90), y + random.randint(50, 70)])
@@ -27,12 +30,14 @@ class MainMenu:
         self.idx = 0
         self.bg_y = -600
         self.alpha_level = 0
+        
 
-    def update(self, dt):
+    def update(self, dt, score):
         self.surface.fill([0, 0, 0])
         if self.active == 0:
             self.update_background(dt)
             self.update_menu()
+            self.update_score(score)
 
         return self.surface
 
@@ -85,3 +90,8 @@ class MainMenu:
             self.surface.blit(self.quit_s, [20, 470])
         else:
             self.surface.blit(self.quit, [20, 470])
+
+    def update_score(self, score):
+        score_ = self.score_font.render(score, True, [255, 255, 0])
+        self.surface.blit(self.best_score, [330, 30])
+        self.surface.blit(score_, [655, 32])

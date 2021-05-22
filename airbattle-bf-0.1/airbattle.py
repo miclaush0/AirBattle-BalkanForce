@@ -81,13 +81,14 @@ def main():
             if loading_screen.active == False:
                 active = 1
         elif active == 1:
-            window.blit(main_menu.update(dt), [0, 0])
+            window.blit(main_menu.update(dt, data_handler.data[1]), [0, 0])
         pygame.display.update()
 
         # Input
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+            
             
 
 # Starting the main function
