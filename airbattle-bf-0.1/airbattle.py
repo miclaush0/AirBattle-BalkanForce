@@ -1,4 +1,5 @@
 import ctypes
+from typing import AsyncIterable
 import pygame
 import time
 
@@ -7,6 +8,7 @@ from pygame.constants import K_w
 from modules.data_handler import *
 from modules.loading_screen import *
 from modules.main_menu import *
+from modules.game import *
 
 
 # Hiding the console 
@@ -29,6 +31,7 @@ window = pygame.display.set_mode([WIDTH, HEIGHT])
 data_handler = DataHandler()
 loading_screen = LoadingScreen()
 main_menu = MainMenu()
+game = Game()
 
 # Globals initialization
 clock = pygame.time.Clock()
@@ -85,6 +88,9 @@ def main():
                 active = 1
         elif active == 1:
             window.blit(main_menu.update(dt, data_handler.data[1]), [0, 0])
+        elif active == 2:
+            window.blit(game.update(), [0, 0])
+
         pygame.display.update()
 
         # Input
@@ -126,9 +132,10 @@ def main():
                     event.key == pygame.K_SPACE):
                     pressed_enter = False         
 
-        # Game logic
+        #Logic
         if active == 0:
             pass
+        
         elif active == 1:
             if pressed_down:
                 pressed_down = False
@@ -145,7 +152,7 @@ def main():
             elif pressed_enter:
                 pressed_enter = False
                 if main_menu.selected == 1:
-                    pass
+                    active = 2
                 elif main_menu.selected == 2:
                     if main_menu.active == 0:
                         main_menu.active = 1

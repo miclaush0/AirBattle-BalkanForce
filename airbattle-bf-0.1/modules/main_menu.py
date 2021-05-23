@@ -17,9 +17,12 @@ class MainMenu:
         self.credits_font = pygame.font.Font('fonts\\kongtext.ttf', 28)
         self.tcredits_font = pygame.font.Font('fonts\\kongtext.ttf', 20)
         self.trees = []
-        for y in range(-50, 600, 70):
-            for x in range(-50, 800, 70):
-                self.trees.append([x + random.randint(50, 90), y + random.randint(50, 70)])
+        
+        for y in range(0, 600, 20):
+            for x in range(-15, 800, 30):
+                self.trees.append([x, y])
+
+
         self.surface = pygame.Surface([800, 600])
         self.active = 0
         self.selected = 0
@@ -29,7 +32,6 @@ class MainMenu:
         
 
     def update(self, dt, score):
-        self.surface.fill([0, 0, 0])
         if self.active == 0:
             self.update_background(dt)
             self.update_menu()
@@ -64,10 +66,7 @@ class MainMenu:
         for tree in bin:
             self.trees.remove(tree)
 
-        if int(self.bg_y) == -600:
-            for y in range(-600, -50, 70):
-                for x in range(-70, 800, 70):
-                    self.trees.append([x + random.randint(50, 90), y + random.randint(50, 70)]) 
+
 
         # Update
         self.surface.set_alpha(self.alpha_level)
@@ -102,7 +101,7 @@ class MainMenu:
         
         self.surface.blit(self.credits_font.render('Producers/Designers', True, [225, 225, 0]), [20, 200])
         self.surface.blit(self.tcredits_font.render('Gosman Mihail', True, [225, 225, 10]), [20, 240])
-        self.surface.blit(self.tcredits_font.render('Valentin Minca', True, [225, 225, 10]), [20, 265])
+        self.surface.blit(self.tcredits_font.render('Minca Valentin', True, [225, 225, 10]), [20, 265])
 
         self.surface.blit(self.credits_font.render('Special Thanks', True, [225, 225, 0]), [20, 320])
         self.surface.blit(self.tcredits_font.render('zone38@zone38.net', True, [225, 225, 10]), [20, 360])
