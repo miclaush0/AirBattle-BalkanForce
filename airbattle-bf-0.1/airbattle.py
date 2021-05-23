@@ -12,7 +12,7 @@ from modules.game import *
 
 
 # Hiding the console 
-ctypes.windll.user32.ShowWindow( ctypes.windll.kernel32.GetConsoleWindow(), 0 )
+ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 0 )
 
 
 # Constants
@@ -64,7 +64,7 @@ def main():
                 exit()
 
     running = True
-    active = 1
+    active = 0
     pressed_right = False
     pressed_left = False
     pressed_up = False
@@ -79,7 +79,7 @@ def main():
         dt *= FPS
         last_time = time.time()
         clock.tick(FPS)  
-
+       
         # Graphics
         window.fill([0, 0, 0])
         if active == 0:
@@ -89,7 +89,7 @@ def main():
         elif active == 1:
             window.blit(main_menu.update(dt, data_handler.data[1]), [0, 0])
         elif active == 2:
-            window.blit(game.update(), [0, 0])
+            window.blit(game.update(dt), [0, 0])
 
         pygame.display.update()
 

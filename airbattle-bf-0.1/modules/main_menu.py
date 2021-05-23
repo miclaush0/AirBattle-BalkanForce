@@ -6,6 +6,9 @@ from pygame.event import set_allowed
 from pygame.surfarray import array_alpha
 from time import sleep
 
+def takeSecond(elem):
+    return elem[1]
+
 class MainMenu:
     def __init__(self):
         self.background = pygame.image.load('images\\menu\\background.png')
@@ -13,16 +16,16 @@ class MainMenu:
         self.title_font = pygame.font.Font('fonts\\kongtext.ttf', 55)
         self.subtitle_font = pygame.font.Font('fonts\\kongtext.ttf', 35)
         self.menu_elem_font = pygame.font.Font('fonts\\kongtext.ttf', 30) 
-        self.score_font = pygame.font.Font('fonts\\kongtext.ttf', 25)
+        self.score_font = pygame.font.Font('fonts\\kongtext.ttf', 20)
         self.credits_font = pygame.font.Font('fonts\\kongtext.ttf', 28)
         self.tcredits_font = pygame.font.Font('fonts\\kongtext.ttf', 20)
-        self.trees = []
-        
-        for y in range(0, 600, 20):
-            for x in range(-15, 800, 30):
-                self.trees.append([x, y])
-
-
+        self.trees = [] 
+        """ for y in range(-15, 600, 50):
+            for x in range(-15, 800, 70):
+                self.trees.append([x + random.randint(-40, 20), y + random.randint(0, 10)])"""
+        for i in range(300):
+            self.trees.append([random.randint(-15, 800), random.randint(-615, 600)])
+        self.trees.sort(key=takeSecond)
         self.surface = pygame.Surface([800, 600])
         self.active = 0
         self.selected = 0
@@ -66,7 +69,14 @@ class MainMenu:
         for tree in bin:
             self.trees.remove(tree)
 
-
+        if int(self.bg_y) == -600:
+            """for y in range(-615, -15, 50):
+                for x in range(-15, 800, 70):
+                    self.trees.append([x + random.randint(-40, 20), y + random.randint(0, 10)])"""
+            for i in range(200):
+                self.trees.append([random.randint(-15, 800), random.randint(-615, -15)])
+            self.trees.sort(key=takeSecond)
+            
 
         # Update
         self.surface.set_alpha(self.alpha_level)
