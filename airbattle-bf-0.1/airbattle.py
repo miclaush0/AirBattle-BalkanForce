@@ -2,6 +2,8 @@ import ctypes
 import pygame
 import time
 
+from pygame.constants import K_w
+
 from modules.data_handler import *
 from modules.loading_screen import *
 from modules.main_menu import *
@@ -64,6 +66,7 @@ def main():
     pressed_left = False
     pressed_up = False
     pressed_down = False
+    pressed_enter = False
     last_time = time.time()
 
     # main loop
@@ -89,6 +92,71 @@ def main():
             if event.type == pygame.QUIT:
                 running = False
             
+            if event.type == pygame.KEYDOWN:
+                if (event.key == pygame.K_UP or
+                    event.key == pygame.K_w):
+                    pressed_up = True
+                elif (event.key == pygame.K_DOWN or
+                    event.key == pygame.K_s):
+                    pressed_down = True
+                elif (event.key == pygame.K_LEFT or
+                    event.key == pygame.K_a):
+                    pressed_left = True
+                elif (event.key == pygame.K_RIGHT or
+                    event.key == pygame.K_d):
+                    pressed_right = True
+                elif (event.key == pygame.K_RETURN or
+                    event.key == pygame.K_SPACE):
+                    pressed_enter = True          
+
+            if event.type == pygame.KEYUP:
+                if (event.key == pygame.K_UP or
+                    event.key == pygame.K_w):
+                    pressed_up = False
+                elif (event.key == pygame.K_DOWN or
+                    event.key == pygame.K_s):
+                    pressed_down = False
+                elif (event.key == pygame.K_LEFT or
+                    event.key == pygame.K_a):
+                    pressed_left = False
+                elif (event.key == pygame.K_RIGHT or
+                    event.key == pygame.K_d):
+                    pressed_right = False
+                elif (event.key == pygame.K_RETURN or
+                    event.key == pygame.K_SPACE):
+                    pressed_enter = False         
+
+        # Game logic
+        if active == 0:
+            pass
+        elif active == 1:
+            if pressed_down:
+                pressed_down = False
+                if main_menu.selected != 3:
+                    main_menu.selected += 1
+                else:
+                    main_menu.selected = 1
+            elif pressed_up:
+                pressed_up = False
+                if main_menu.selected != 1:
+                    main_menu.selected -= 1
+                else:
+                    main_menu.selected = 3
+            elif pressed_enter:
+                pressed_enter = False
+                if main_menu.selected == 1:
+                    pass
+                elif main_menu.selected == 2:
+                    if main_menu.active == 0:
+                        main_menu.active = 1
+                    else:
+                        main_menu.active = 0
+                elif main_menu.selected == 3:
+                    running = False
+
+    
+    pygame.quit()
+    exit()
             
 
 # Starting the main function

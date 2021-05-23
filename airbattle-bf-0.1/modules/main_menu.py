@@ -10,17 +10,13 @@ class MainMenu:
     def __init__(self):
         self.background = pygame.image.load('images\\menu\\background.png')
         self.tree = pygame.image.load('images\\menu\\tree.png')
-        self.title = pygame.image.load('images\\menu\\title.png')
-        self.play_s = pygame.image.load('images\\menu\\play_s.png')
-        self.play = pygame.image.load('images\\menu\\play.png')
-        self.credits_s = pygame.image.load('images\\menu\\credits_s.png')
-        self.credits = pygame.image.load('images\\menu\\credits.png')
-        self.quit_s = pygame.image.load('images\\menu\\quit_s.png')
-        self.quit = pygame.image.load('images\\menu\\quit.png')
-        self.best_score = pygame.image.load('images\\menu\\best_score.png')
-        self.score_font = pygame.font.Font('fonts\\kongtext.ttf', 30)
+        self.title_font = pygame.font.Font('fonts\\kongtext.ttf', 55)
+        self.subtitle_font = pygame.font.Font('fonts\\kongtext.ttf', 35)
+        self.menu_elem_font = pygame.font.Font('fonts\\kongtext.ttf', 30) 
+        self.score_font = pygame.font.Font('fonts\\kongtext.ttf', 25)
+        self.credits_font = pygame.font.Font('fonts\\kongtext.ttf', 28)
+        self.tcredits_font = pygame.font.Font('fonts\\kongtext.ttf', 20)
         self.trees = []
-        
         for y in range(-50, 600, 70):
             for x in range(-50, 800, 70):
                 self.trees.append([x + random.randint(50, 90), y + random.randint(50, 70)])
@@ -37,6 +33,10 @@ class MainMenu:
         if self.active == 0:
             self.update_background(dt)
             self.update_menu()
+            self.update_score(score)
+        elif self.active == 1:
+            self.update_background(dt)
+            self.update_credits()
             self.update_score(score)
 
         return self.surface
@@ -76,22 +76,34 @@ class MainMenu:
             self.surface.blit(self.tree, tree)
 
     def update_menu(self):
-        self.surface.blit(self.title, [20, 190])
+        self.surface.blit(self.title_font.render('AirBattle', True, [225, 225, 0]), [20, 190])
+        self.surface.blit(self.subtitle_font.render('Balkan Force', True, [225, 225, 0]), [22, 248])
         
         if self.selected == 1:
-            self.surface.blit(self.play_s, [20, 350])
+            self.surface.blit(self.menu_elem_font.render('Play', True, [225, 225, 225]), [20, 350])
         else:
-            self.surface.blit(self.play, [20, 350])
+            self.surface.blit(self.menu_elem_font.render('Play', True, [225, 225, 0]), [20, 350])
         if self.selected == 2:
-            self.surface.blit(self.credits_s, [20, 410])
+            self.surface.blit(self.menu_elem_font.render('Credits', True, [225, 225, 225]), [20, 400])
         else:
-            self.surface.blit(self.credits, [20, 410])
+            self.surface.blit(self.menu_elem_font.render('Credits', True, [225, 225, 0]), [20, 400])
         if self.selected == 3:
-            self.surface.blit(self.quit_s, [20, 470])
+            self.surface.blit(self.menu_elem_font.render('Quit', True, [225, 225, 225]), [20, 450])
         else:
-            self.surface.blit(self.quit, [20, 470])
+            self.surface.blit(self.menu_elem_font.render('Quit', True, [225, 225, 0]), [20, 450])
 
     def update_score(self, score):
-        score_ = self.score_font.render(score, True, [255, 255, 0])
-        self.surface.blit(self.best_score, [330, 30])
-        self.surface.blit(score_, [655, 32])
+    
+        self.surface.blit(self.score_font.render('Best score:' + score, True, [255, 255, 0]), [440, 500])
+
+    def update_credits(self):
+        self.surface.blit(self.title_font.render('AirBattle', True, [225, 225, 0]), [150, 40])
+        self.surface.blit(self.subtitle_font.render('Balkan Force', True, [225, 225, 0]), [152, 98])
+        
+        self.surface.blit(self.credits_font.render('Producers/Designers', True, [225, 225, 0]), [20, 200])
+        self.surface.blit(self.tcredits_font.render('Gosman Mihail', True, [225, 225, 10]), [20, 240])
+        self.surface.blit(self.tcredits_font.render('Valentin Minca', True, [225, 225, 10]), [20, 265])
+
+        self.surface.blit(self.credits_font.render('Special Thanks', True, [225, 225, 0]), [20, 320])
+        self.surface.blit(self.tcredits_font.render('zone38@zone38.net', True, [225, 225, 10]), [20, 360])
+        self.surface.blit(self.tcredits_font.render('opengameart.org', True, [225, 225, 0]), [20, 385])
