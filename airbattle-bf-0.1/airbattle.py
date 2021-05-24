@@ -152,6 +152,7 @@ def main():
             elif pressed_enter:
                 pressed_enter = False
                 if main_menu.selected == 1:
+                    game = Game()
                     active = 2
                 elif main_menu.selected == 2:
                     if main_menu.active == 0:
@@ -161,6 +162,26 @@ def main():
                 elif main_menu.selected == 3:
                     running = False
 
+        elif active == 2:
+            if pressed_left:
+                if game.player.x - game.player.vel >= 0:
+                    game.player.vel += 3
+                    game.player.x += -game.player.vel * dt
+                else:
+                    game.player.vel = 0
+                    game.player.x = 0
+            elif pressed_right:
+                if game.player.x + game.player.vel <= WIDTH - 60:
+                    game.player.vel += 4
+                    game.player.x += game.player.vel * dt
+                else:
+                    game.player.x = WIDTH - 60
+                    game.player.vel = 10
+            elif pressed_enter:
+                game.bullet.bullets.append([game.player.x + 25, game.player.y])
+                pressed_enter = False
+            else:
+                game.player.vel = 10
     
     pygame.quit()
     exit()
