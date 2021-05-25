@@ -4,6 +4,7 @@ import pygame
 import time
 
 from pygame.constants import K_w
+from pygame.display import get_active
 
 from modules.data_handler import *
 from modules.loading_screen import *
@@ -39,6 +40,8 @@ clock = pygame.time.Clock()
 
 # Main function
 def main():
+    click = soun_obj=pygame.mixer.Sound("sounds\\click.wav")
+    shoot = soun_obj=pygame.mixer.Sound("sounds\\shoot.wav")
     MessageBox = ctypes.windll.user32.MessageBoxW
     if data_handler.data[0] == 'False':
         res = MessageBox(None, 'This product is distributed under the GPL-3 license.'
@@ -70,6 +73,8 @@ def main():
     pressed_up = False
     pressed_down = False
     pressed_enter = False
+    pressed_escape = False
+
     last_time = time.time()
 
     # main loop
@@ -113,7 +118,9 @@ def main():
                     pressed_right = True
                 elif (event.key == pygame.K_RETURN or
                     event.key == pygame.K_SPACE):
-                    pressed_enter = True          
+                    pressed_enter = True 
+                elif event.key == pygame.K_ESCAPE:
+                    pressed_escape = True          
 
             if event.type == pygame.KEYUP:
                 if (event.key == pygame.K_UP or
@@ -139,20 +146,23 @@ def main():
         elif active == 1:
             if pressed_down:
                 pressed_down = False
+                click.play()
                 if main_menu.selected != 3:
                     main_menu.selected += 1
                 else:
                     main_menu.selected = 1
             elif pressed_up:
                 pressed_up = False
+                click.play()
                 if main_menu.selected != 1:
                     main_menu.selected -= 1
                 else:
                     main_menu.selected = 3
             elif pressed_enter:
                 pressed_enter = False
+                click.play()
                 if main_menu.selected == 1:
-                    game = Game()
+                    game.new_game()
                     active = 2
                 elif main_menu.selected == 2:
                     if main_menu.active == 0:
@@ -163,26 +173,50 @@ def main():
                     running = False
 
         elif active == 2:
-            if pressed_left:
-                if game.player.x - game.player.vel >= 0:
-                    game.player.vel += 3
-                    game.player.x += -game.player.vel * dt
+            if game.active == 0:
+                if pressed_left:
+                    if game.player.x - game.player.vel >= 0:
+                        game.player.vel += 3
+                        game.player.x += -game.player.vel * dt  
+                    else:
+                        game.player.vel = 0
+                        game.player.x = 0
+                elif pressed_right:
+                    if game.player.x + game.player.vel <= WIDTH - 60:
+                        game.player.vel += 4
+                        game.player.x += game.player.vel * dt
+                    else:
+                        game.player.x = WIDTH - 60
+                        game.player.vel = 10
+                elif pressed_enter:
+                    game.bullet.bullets.append([game.player.x + 24, game.player.y])
+                    shoot.play()
+                    pressed_enter = False       
+                elif pressed_escape:
+                    pressed_escape = False
+                    game.active = 1
                 else:
-                    game.player.vel = 0
-                    game.player.x = 0
-            elif pressed_right:
-                if game.player.x + game.player.vel <= WIDTH - 60:
-                    game.player.vel += 4
-                    game.player.x += game.player.vel * dt
-                else:
-                    game.player.x = WIDTH - 60
                     game.player.vel = 10
-            elif pressed_enter:
-                game.bullet.bullets.append([game.player.x + 25, game.player.y])
-                pressed_enter = False
-            else:
-                game.player.vel = 10
-    
+            elif game.active == 1:
+                if game.game_over == True:
+                    if pressed_enter:
+                        if game.score > int(data_handler.data[1]):
+                            data_handler.data[1] = str(game.score)
+                            data_handler.write_data()
+                        active = 1
+                        pressed_enter = False
+                else:
+                    if pressed_escape:
+                        game.active = 0
+                        pressed_escape = False
+                    elif pressed_enter:
+                        if game.score > int(data_handler.data[1]):
+                            data_handler.data[1] = str(game.score)
+                            data_handler.write_data()
+                        
+                        active = 1
+                        pressed_enter = False
+
     pygame.quit()
     exit()
             
